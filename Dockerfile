@@ -15,7 +15,7 @@ FROM python:3.8
 # are not run as root. The "adduser" command is fine for Debian-based images
 # (such as python:3.8) and should be replaced when a different distribution
 # is used
-ARG NB_USER=TutorialUser
+ARG NB_USER=jovyan
 ARG NB_UID=1000
 ENV USER ${NB_USER}
 ENV NB_UID ${NB_UID}
@@ -42,3 +42,10 @@ USER root
 RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
 
+# Specify working directory
+WORKDIR ${HOME}
+
+# Use a script as an entrypoint
+ENTRYPOINT ["jupyter"]
+CMD ["notebook", "--port=8888", "--no-browser", \
+     "--ip=0.0.0.0", "--allow-root"]
