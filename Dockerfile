@@ -43,7 +43,7 @@ RUN pip install --no-cache-dir notebook==6.2.0
 RUN pip install --no-cache-dir jupyterhub
 
 # Specify working directory
-WORKDIR ${HOME}
+# WORKDIR ${HOME}
 
 # Use a script as an entrypoint
 # ENTRYPOINT ["jupyter"]
