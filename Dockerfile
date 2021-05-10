@@ -43,7 +43,7 @@ RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
 
 # Specify working directory
-# WORKDIR ${HOME}
+WORKDIR ${HOME}
 
 # Use a script as an entrypoint
 # ENTRYPOINT ["jupyter"]
