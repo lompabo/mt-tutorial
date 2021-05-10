@@ -15,7 +15,7 @@ FROM python:3.8
 # are not run as root. The "adduser" command is fine for Debian-based images
 # (such as python:3.8) and should be replaced when a different distribution
 # is used
-ARG NB_USER=jovyan
+ARG NB_USER=TemplateUser
 ARG NB_UID=1000
 ENV USER ${NB_USER}
 ENV NB_UID ${NB_UID}
