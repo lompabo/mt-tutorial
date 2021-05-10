@@ -49,4 +49,4 @@ WORKDIR ${HOME}
 # ENTRYPOINT ["jupyter"]
 # CMD ["notebook", "--port=8888", "--no-browser", \
 #      "--ip=0.0.0.0", "--allow-root"]
-ENTRYPOINT ["entrypoint.sh"]
+# ENTRYPOINT ["entrypoint.sh"]
