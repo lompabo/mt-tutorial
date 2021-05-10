@@ -46,7 +46,7 @@ USER ${NB_USER}
 WORKDIR ${HOME}
 
 # Use a script as an entrypoint
-# ENTRYPOINT ["jupyter"]
-# CMD ["notebook", "--port=8888", "--no-browser", \
-#      "--ip=0.0.0.0", "--allow-root"]
+ENTRYPOINT ["jupyter"]
+CMD ["notebook", "--port=8888", "--no-browser", \
+     "--ip=0.0.0.0", "--allow-root"]
 # ENTRYPOINT ["entrypoint.sh"]
