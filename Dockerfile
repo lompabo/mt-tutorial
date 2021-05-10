@@ -15,7 +15,7 @@ FROM python:3.8
 # are not run as root. The "adduser" command is fine for Debian-based images
 # (such as python:3.8) and should be replaced when a different distribution
 # is used
-ARG NB_USER=TemplateUser
+ARG NB_USER=jovyan
 ARG NB_UID=1000
 ENV USER ${NB_USER}
 ENV NB_UID ${NB_UID}
@@ -26,6 +26,13 @@ RUN adduser --disabled-password \
     --uid ${NB_UID} \
     ${NB_USER}
 
+# Install minimal requirements
+# NOTE: these are for Binder compatibility. You can change the jupyter and
+# jupyterhub versions, but referring a specific version is highly advised
+# to ensure reproducibility
+RUN pip install --no-cache-dir notebook==6.2.0
+RUN pip install --no-cache-dir jupyterhub
+
 # Make sure the contents of our repo are in ${HOME}
 # NOTE: this is needed again by Binder, to make the notebook contents
 # available to all users. We also need to change the ownership of the home
@@ -34,13 +41,6 @@ COPY . ${HOME}
 USER root
 RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
-
-# Install minimal requirements
-# NOTE: these are for Binder compatibility. You can change the jupyter and
-# jupyterhub versions, but referring a specific version is highly advised
-# to ensure reproducibility
-RUN pip install --no-cache-dir notebook==6.2.0
-RUN pip install --no-cache-dir jupyterhub
 
 # Specify working directory
 # WORKDIR ${HOME}
