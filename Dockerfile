@@ -14,7 +14,7 @@ FROM python:3.8
 # NOTE: this is required for Binder compatibility, to ensure that processes
 # are not run as root. The "adduser" command is fine for Debian-based images
 # (such as python:3.8) and should be replaced when a different distribution
-# is used
+# is used. Keep this as it is unless you know what you are doing
 ARG NB_USER=jovyan
 ARG NB_UID=1000
 ENV USER ${NB_USER}
@@ -29,9 +29,23 @@ RUN adduser --disabled-password \
 # Install minimal requirements
 # NOTE: these are for Binder compatibility. You can change the jupyter and
 # jupyterhub versions, but referring a specific version is highly advised
-# to ensure reproducibility
+# to ensure reproducibility. Feel free to update the version tags, but it's
+# better to keep both packages installed
 RUN pip install --no-cache-dir notebook==6.2.0
 RUN pip install --no-cache-dir jupyterhub
+
+# CONTAINER SPECIFIC INSTALLATION -------------------------------------------
+# Most of the configuration steps specific to your container can fit here
+
+# Update the package manager and install a simple module. The RUN command
+# will execute a command on the container and then save a snapshot of the
+# results. The last of these snapshots will be the final image
+RUN apt-get update -y && apt-get install -y zip
+
+# Install additional Python packages
+RUN pip install --no-cache-dir pandas matplotlib scipy
+
+# END OF THE CONTAINER SPECIFIC INSTALLATION --------------------------------
 
 # Make sure the contents of our repo are in ${HOME}
 # NOTE: this is needed again by Binder, to make the notebook contents
@@ -45,10 +59,8 @@ USER ${NB_USER}
 # Specify working directory
 WORKDIR ${HOME}
 
-# Use a script as an entrypoint
-# ENTRYPOINT ["jupyter"]
-# CMD ["notebook", "--port=8888", "--no-browser", \
-#      "--ip=0.0.0.0", "--allow-root"]
-# ENTRYPOINT ["entrypoint.sh"]
+# Use CMD to specify the starting command
+# NOTE: Binder will override this by explicitily calling a program (jupyter)
+# within the container, and by passing its own list of arguments
 CMD ["jupyter", "notebook", "--port=8888", "--no-browser", \
      "--ip=0.0.0.0", "--allow-root"]
